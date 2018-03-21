@@ -1,4 +1,6 @@
-docker-compose up -f backend/docker-compose.yml
+git submodule update --remote
+docker-compose --project-directory backend -f backend/docker-compose.yml up -d
 npm --prefix frontend install
 npm --prefix frontend run build
-ln -s nginx/sites-available/salmefelt.nginx /etc/nginx/sites-enabled/salmefelt-unstable
+sudo ln -sf $PWD/nginx/sites-available/salmefelt.nginx /etc/nginx/sites-enabled/salmefelt-unstable
+sudo service nginx reload
