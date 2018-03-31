@@ -29,9 +29,23 @@ server {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 try_files $uri $uri/ =404;
-        }
+      	}
 
-	location ~ (/api|/admin|/media) {
+	location ^~ /static/admin/ {
+		alias /home/truu/salmefelt/backend/static/admin/;
+		gzip_static on;
+		expires off;
+	}
+
+	location ^~ /images/ {
+		alias /home/truu/salmefelt/backend/media/images/;
+		gzip_static on;
+		expires off;
+		# try_files /home/truu/salmefelt/backend/media/images/$uri =404;
+	}
+
+	location ~ /(api|admin) {
+		proxy_set_header Cache-Control no-cache;
 		proxy_pass http://localhost:8000;
 		proxy_bind $server_addr;
 		proxy_set_header X-Real-IP $remote_addr;
@@ -46,9 +60,10 @@ server {
 	}
 
 	location = /service-worker.js {
-		expires off;
-		add_header Cache-Control no-cache;
+		add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
 		access_log off;
+  		expires off;
+		proxy_no_cache 1;
 	}
 
 	access_log /var/log/nginx/beta.salmefelt.com_access.log;
