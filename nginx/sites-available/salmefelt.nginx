@@ -44,6 +44,12 @@ server {
 		# try_files /home/truu/salmefelt/backend/media/images/$uri =404;
 	}
 
+	location ^~ /CACHE/ {
+		alias /home/truu/salmefelt/backend/media/CACHE/;
+                gzip_static on;
+                expires off;
+	}
+
 	location ~ /(api|admin) {
 		client_max_body_size 20M;
 		proxy_set_header Cache-Control no-cache;
