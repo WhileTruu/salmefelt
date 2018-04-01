@@ -3,37 +3,49 @@
 ##
 
 server {
-	listen 8080;
-	listen [::]:8080;
-	# server_name salmefelt.com www.salmefelt.com;
-	# return 302 https://$server_name$request_uri;
-#}
+	listen 80;
+	listen [::]:80;
+	server_name beta.salmefelt.com;
+	return 302 https://$server_name$request_uri;
+}
 
-#server {
+server {
 	# SSL configuration
-	# listen 443 ssl;
-	# listen [::]:443 ssl;
-	# include snippets/ssl-salmefelt.com.conf;
-	# include snippets/ssl-params.conf;
+	listen 443 ssl;
+	listen [::]:443 ssl;
+	include snippets/ssl-beta.salmefelt.com.conf;
+	include snippets/ssl-params.conf;
 
 	# Root folder location (where and what to serve)
 	root /home/truu/salmefelt/frontend/build;
 
 	# Add index.php to the list if you are using PHP
-	index index.html;
+	index /index.html;
 
-      	server_name _;
+	# Name of the server, the first one in the list is the default.
+      	server_name beta.salmefelt.com;
 
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 try_files $uri $uri/ =404;
-        }
+      	}
 
-	# Is name of server, the first on is default
-	# server_name salmefelt.com www.salmefelt.com;
+	location ^~ /static/admin/ {
+		alias /home/truu/salmefelt/backend/static/admin/;
+		gzip_static on;
+		expires off;
+	}
 
-	location ~ (/api|/admin|/static|/media) {
+	location ^~ /images/ {
+		alias /home/truu/salmefelt/backend/media/images/;
+		gzip_static on;
+		expires off;
+		# try_files /home/truu/salmefelt/backend/media/images/$uri =404;
+	}
+
+	location ~ /(api|admin) {
+		proxy_set_header Cache-Control no-cache;
 		proxy_pass http://localhost:8000;
 		proxy_bind $server_addr;
 		proxy_set_header X-Real-IP $remote_addr;
@@ -43,13 +55,17 @@ server {
 
 	# Webroot plugin places a special file in `/.well-known` dir in document root.
 	# Used by Let's Encrypt for validation.
-	# location ~ /.well-known {
-	# 	allow all;
-	# }
+	location ~ /.well-known {
+		allow all;
+	}
 
 	location = /service-worker.js {
-		expires off;
-		add_header Cache-Control no-cache;
+		add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
 		access_log off;
+  		expires off;
+		proxy_no_cache 1;
 	}
+
+	access_log /var/log/nginx/beta.salmefelt.com_access.log;
+	error_log /var/log/nginx/beta.salmefelt.com_errors.log;
 }
