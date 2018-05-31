@@ -5,7 +5,7 @@
 server {
 	listen 80;
 	listen [::]:80;
-	server_name beta.salmefelt.com;
+	server_name salmefelt.com www.salmefelt.com;
 	return 302 https://$server_name$request_uri;
 }
 
@@ -13,7 +13,7 @@ server {
 	# SSL configuration
 	listen 443 ssl;
 	listen [::]:443 ssl;
-	include snippets/ssl-beta.salmefelt.com.conf;
+	include snippets/ssl-salmefelt.com.conf;
 	include snippets/ssl-params.conf;
 
 	# Root folder location (where and what to serve)
@@ -23,13 +23,13 @@ server {
 	index /index.html;
 
 	# Name of the server, the first one in the list is the default.
-      	server_name beta.salmefelt.com;
+	server_name salmefelt.com www.salmefelt.com;
 
-        location / {
-                # First attempt to serve request as file, then
-                # as directory, then fall back to displaying a 404.
-                try_files $uri $uri/ =404;
-      	}
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
 
 	location ^~ /static/admin/ {
 		alias /home/truu/salmefelt/backend/static/admin/;
@@ -46,8 +46,8 @@ server {
 
 	location ^~ /CACHE/ {
 		alias /home/truu/salmefelt/backend/media/CACHE/;
-                gzip_static on;
-                expires off;
+		gzip_static on;
+		expires off;
 	}
 
 	location ~ /(api|admin) {
@@ -69,7 +69,7 @@ server {
 	location = /service-worker.js {
 		add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
 		access_log off;
-  		expires off;
+		expires off;
 		proxy_no_cache 1;
 	}
 
