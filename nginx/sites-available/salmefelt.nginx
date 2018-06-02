@@ -37,14 +37,14 @@ server {
 		expires off;
 	}
 
-	location ^~ /images/ {
+	location ^~ /(images|media/images)/ {
 		alias /home/truu/salmefelt/backend/media/images/;
 		gzip_static on;
 		expires off;
 		# try_files /home/truu/salmefelt/backend/media/images/$uri =404;
 	}
 
-	location ^~ /CACHE/ {
+	location ^~ /(CACHE|media/cache)/ {
 		alias /home/truu/salmefelt/backend/media/CACHE/;
 		gzip_static on;
 		expires off;
