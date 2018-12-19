@@ -1,4 +1,3 @@
-git submodule update --remote
 docker-compose --project-directory backend -f backend/docker-compose.yml up -d
 npm --prefix frontend install
 npm --prefix frontend run build
