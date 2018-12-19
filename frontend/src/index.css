@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700,800');
+
+@import './Header/header.css';
+@import './Pages/Main/main.css';
+@import './Pages/Product/product.css';
+@import './Common/Button/button.css';
+
+:root {
+  --spacing-small: 0.8rem;
+  --spacing-medium: 1rem;
+  --spacing-large: 2.25rem;
+  --button-height: 3rem;
+  --button-border-radius: 0.5rem;
+  --color-link-light: #fcffa9;
+  --color-link-dark: #c400de;
+  --color-dark: #293c4b;
+  --button-border: none;
+  --focus-shadow: 0 0 0 0.25rem rgba(100, 100, 255, 0.5);
+  --selected-shadow: 0 0 0 0.25rem rgba(255, 0, 186, 0.5);
+  --hover-shadow: 0 10px 18px rgba(0, 0, 0, 0.11), 0 4px 5px rgba(0, 0, 0, 0.08);
+  --hover-tranform: translateY(-0.15rem);
+  --active-transform: translateY(0.05rem);
+
+  --text-shadow-1: 0 0 2px rgba(0, 0, 0, 0.11);
+  --text-shadow-2: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --text-shadow: var(--text-shadow-1), var(--text-shadow-2);
+
+  --active-shadow-1: 0 2px 3px rgba(0, 0, 0, 0.11);
+  --active-shadow-2: 0 1px 1px rgba(0, 0, 0, 0.08);
+  --active-shadow: var(--active-shadow-1), var(--active-shadow-2);
+
+  --default-shadow-1: 0 4px 6px rgba(0, 0, 0, 0.11);
+  --default-shadow-2: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --default-shadow: var(--default-shadow-1), var(--default-shadow-2);
+
+  --max-width-small: 576px;
+  --max-width-medium: 768px;
+  --max-width-large: 992px;
+  --max-width-extra-large: 1200px;
+}
+
+html,
+body {
+  overflow: visible;
+  height: 100%;
+  width: 100%;
+}
+
+#root::after {
+  content: '';
+  position: fixed;
+  top: -50vh;
+  background: radial-gradient(circle at 45% 9%, #bff9db, #fff);
+  height: 200vh;
+  width: 100vw;
+  z-index: -1;
+}
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  margin: 0;
+  color: var(--color-dark);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  text-shadow: var(--text-shadow);
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link--light {
+  color: var(--color-link-light);
+}
+
+.link--dark {
+  color: var(--color-link-dark);
+}
