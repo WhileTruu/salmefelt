@@ -13,8 +13,8 @@ translations =
         The handmade felt textile products are a great fit for anyone who values
         warmth, comfort and positivity.<br>
         Salmefelt Ltd. produces needle felted dolls, sauna hats, wool slippers,
-        scarves, bags and socks, all of which are made with a specially designed
-        felting technique.<br>
+        scarves, bags and socks, <br>
+        all of which are made with a specially designed felting technique.<br>
         Like something you see? Write to us and we'll make it for you!
         """
     , email = "e-mail"
