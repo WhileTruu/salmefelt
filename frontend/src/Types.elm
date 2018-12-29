@@ -1,21 +1,29 @@
-module Types exposing (..)
+module Types exposing
+    ( Flags
+    , Model
+    , Msg(..)
+    , Route(..)
+    )
 
+import Browser.Navigation
 import Common.Types.Language exposing (Language)
 import Common.Types.Product exposing (Product)
-import Common.Types.Product.Images exposing (ProductImage)
+import Common.Types.Product.Images
+    exposing
+        ( ProductImage
+        )
 import Dict exposing (Dict)
 import Http
 import Json.Decode
-import Navigation exposing (Location)
 
 
 type Msg
     = ToggleLanguage
     | GetProducts (Result Http.Error (Dict Int Product))
-    | OnLocationChange Location
+    | ChangeUrl
     | GoToProductPage String Int ProductImage
     | SelectProductImage Int ProductImage
-    | ChangeLocation String
+    | RequestUrl
 
 
 type Route
@@ -24,12 +32,16 @@ type Route
 
 
 type alias Flags =
-    { language : Json.Decode.Value
-    }
+    Json.Decode.Value
+
+
+
+-- Hello world
 
 
 type alias Model =
     { route : Route
+    , key : Browser.Navigation.Key
     , language : Language
     , products : Dict Int Product
     }

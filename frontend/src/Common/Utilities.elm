@@ -7,19 +7,20 @@ import Json.Decode
 
 onClickWithPreventDefault : msg -> Html.Attribute msg
 onClickWithPreventDefault message =
-    let
-        options : Html.Events.Options
-        options =
-            { stopPropagation = False
-            , preventDefault = True
-            }
-    in
-    Html.Events.onWithOptions "click" options (Json.Decode.succeed message)
+    Html.Events.preventDefaultOn
+        "click"
+        (Json.Decode.succeed message |> Json.Decode.map alwaysPreventDefault)
+
+
+alwaysPreventDefault : msg -> ( msg, Bool )
+alwaysPreventDefault msg =
+    ( msg, True )
 
 
 ifThenElse : Bool -> a -> a -> a
 ifThenElse condition a1 a2 =
     if condition then
         a1
+
     else
         a2

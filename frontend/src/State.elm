@@ -1,26 +1,29 @@
-module State exposing (init, update)
+module State exposing (init, onUrlChange, onUrlRequest, update)
 
+import Browser
+import Browser.Navigation
 import Common.Api as Api
-import Common.Types.Language as Language exposing (Language)
 import Common.Ports
+import Common.Types.Language as Language exposing (Language)
 import Common.Types.Product exposing (Product)
 import Common.Types.Product.Images as ProductImages exposing (ProductImage)
 import Dict exposing (Dict)
 import Http
 import Json.Decode
-import Navigation exposing (Location)
 import Routing
 import Types exposing (Flags, Model, Msg(..))
+import Url exposing (Url)
 
 
-init : Flags -> Location -> ( Model, Cmd Msg )
-init flags location =
-    ( { language =
-            flags.language
+init : Flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
+init flags url key =
+    ( { key = key
+      , route = Routing.parseUrl url
+      , language =
+            flags
                 |> Json.Decode.decodeValue Language.decode
                 |> Result.withDefault Language.EN
       , products = Dict.empty
-      , route = Routing.parseLocation location
       }
     , Http.send GetProducts Api.getProducts
     )
@@ -52,18 +55,18 @@ update msg model =
             , Cmd.none
             )
 
-        ChangeLocation path ->
-            ( model, Navigation.newUrl path )
-
         GoToProductPage path index productImage ->
             ( { model
                 | products = replaceActiveProductImageInProducts index productImage model.products
               }
-            , Navigation.newUrl path
+            , Cmd.none
             )
 
-        OnLocationChange location ->
-            ( { model | route = Routing.parseLocation location }, Cmd.none )
+        RequestUrl ->
+            ( model, Cmd.none )
+
+        ChangeUrl ->
+            ( model, Cmd.none )
 
 
 replaceActiveProductImageInProducts : Int -> ProductImage -> Dict Int Product -> Dict Int Product
@@ -76,3 +79,13 @@ replaceActiveProductImageInProducts index productImage products =
                     { product | images = ProductImages.select productImage product.images }
                 )
             )
+
+
+onUrlRequest : Browser.UrlRequest -> Msg
+onUrlRequest request =
+    RequestUrl
+
+
+onUrlChange : Url -> Msg
+onUrlChange url =
+    ChangeUrl

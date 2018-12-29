@@ -1,26 +1,26 @@
-module Routing exposing (parseLocation, productPath)
+module Routing exposing (parseUrl, parser, productPath)
 
-import Navigation exposing (Location)
 import Types exposing (Route(..))
-import UrlParser exposing ((</>), Parser)
+import Url exposing (Url)
+import Url.Parser exposing ((</>), Parser)
 
 
 productPath : Int -> String
 productPath productId =
-    "/products/" ++ toString productId
+    "/products/" ++ String.fromInt productId
 
 
-matchers : Parser (Route -> a) a
-matchers =
-    UrlParser.oneOf
-        [ UrlParser.map Root UrlParser.top
-        , UrlParser.map Product (UrlParser.s "products" </> UrlParser.int)
+parser : Parser (Route -> a) a
+parser =
+    Url.Parser.oneOf
+        [ Url.Parser.map Root Url.Parser.top
+        , Url.Parser.map Product (Url.Parser.s "products" </> Url.Parser.int)
         ]
 
 
-parseLocation : Location -> Route
-parseLocation location =
-    case UrlParser.parsePath matchers location of
+parseUrl : Url -> Route
+parseUrl url =
+    case Url.Parser.parse parser url of
         Just route ->
             route
 

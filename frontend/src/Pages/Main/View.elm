@@ -32,11 +32,11 @@ getName language product =
 productButton : Int -> Product -> ProductImage -> Html Msg
 productButton index product productImage =
     Button.maxSize
-        (GoToProductPage (Routing.productPath product.id) index productImage)
+        ChangeUrl
         False
         [ div
             [ class "square-image-container" ]
-            [ img [ src productImage.thumbnail, alt <| product.nameEN ++ " " ++ toString productImage.id ] [] ]
+            [ img [ src productImage.thumbnail, alt <| product.nameEN ++ " " ++ String.fromInt productImage.id ] [] ]
         ]
 
 
@@ -64,6 +64,7 @@ view translations language products =
                         (\( index, product ) accumulator ->
                             if product.visible then
                                 accumulator ++ [ productList language index product ]
+
                             else
                                 accumulator
                         )

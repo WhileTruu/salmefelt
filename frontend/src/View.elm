@@ -1,5 +1,6 @@
 module View exposing (view)
 
+import Browser
 import Common.Translations as Translations
 import Common.Types.Translations exposing (Translations)
 import Dict
@@ -11,13 +12,11 @@ import Pages.Product.View as ProductPage
 import Types exposing (..)
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    div [ class "app" ]
-        (page
-            (Translations.getTranslationsForLanguage model.language)
-            model
-        )
+    { title = "Salmefelt"
+    , body = page (Translations.getTranslationsForLanguage model.language) model
+    }
 
 
 page : Translations -> Model -> List (Html Msg)
@@ -32,6 +31,10 @@ page translations model =
                 |> Maybe.map
                     (\product ->
                         ProductPage.view
-                            { translations = translations, index = id, product = product, language = model.language }
+                            { translations = translations
+                            , index = id
+                            , product = product
+                            , language = model.language
+                            }
                     )
                 |> Maybe.withDefault (NotFoundPage.view translations)

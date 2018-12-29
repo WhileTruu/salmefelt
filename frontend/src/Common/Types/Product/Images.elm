@@ -1,13 +1,12 @@
-module Common.Types.Product.Images
-    exposing
-        ( ProductImage
-        , ProductImages
-        , decoder
-        , init
-        , list
-        , select
-        , selected
-        )
+module Common.Types.Product.Images exposing
+    ( ProductImage
+    , ProductImages
+    , decoder
+    , init
+    , list
+    , select
+    , selected
+    )
 
 import Json.Decode as Decode exposing (Decoder)
 
@@ -54,10 +53,10 @@ productImageDecoder : Decoder ProductImage
 productImageDecoder =
     ProductImage
         |> Decode.succeed
-        |> Decode.andThen (flip Decode.map (Decode.field "id" Decode.int))
-        |> Decode.andThen (flip Decode.map (Decode.field "fullSize" Decode.string))
-        |> Decode.andThen (flip Decode.map (Decode.field "optimized" Decode.string))
-        |> Decode.andThen (flip Decode.map (Decode.field "thumbnail" Decode.string))
+        |> Decode.andThen (\a -> Decode.map a (Decode.field "id" Decode.int))
+        |> Decode.andThen (\a -> Decode.map a (Decode.field "fullSize" Decode.string))
+        |> Decode.andThen (\a -> Decode.map a (Decode.field "optimized" Decode.string))
+        |> Decode.andThen (\a -> Decode.map a (Decode.field "thumbnail" Decode.string))
 
 
 decoder : Decoder ProductImages

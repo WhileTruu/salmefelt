@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700,800');
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700,800");
 
-@import './Header/header.css';
-@import './Pages/Main/main.css';
-@import './Pages/Product/product.css';
-@import './Common/Button/button.css';
+@import "./Header/header.css";
+@import "./Pages/Main/main.css";
+@import "./Pages/Product/product.css";
+@import "./Common/Button/button.css";
 
 :root {
   --spacing-small: 0.8rem;
@@ -46,8 +46,8 @@ body {
   width: 100%;
 }
 
-#root::after {
-  content: '';
+body::after {
+  content: "";
   position: fixed;
   top: -50vh;
   background: radial-gradient(circle at 45% 9%, #bff9db, #fff);
@@ -57,7 +57,7 @@ body {
 }
 
 body {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   margin: 0;
   color: var(--color-dark);
   font-size: 1rem;
