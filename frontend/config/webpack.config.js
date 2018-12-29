@@ -1,7 +1,5 @@
-const fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
-const resolve = require("resolve");
 const PnpWebpackPlugin = require("pnp-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
@@ -19,8 +17,6 @@ const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent")
 const paths = require("./paths");
 const getClientEnvironment = require("./env");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin-alt");
-const typescriptFormatter = require("react-dev-utils/typescriptFormatter");
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false";
@@ -31,9 +27,6 @@ const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== "false";
 // If ELM_DEBUGGER was set to "false", disable it. Otherwise
 // for invalid values, "true" and as a default, enable it
 const useDebugger = process.env.ELM_DEBUGGER === "true";
-
-// Check if TypeScript is setup
-const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // style files regexes
 const cssRegex = /\.css$/;
@@ -283,9 +276,7 @@ module.exports = function(webpackEnv) {
       // https://github.com/facebook/create-react-app/issues/290
       // `web` extension prefixes have been added for better support
       // for React Native Web.
-      extensions: paths.moduleFileExtensions
-        .map(ext => `.${ext}`)
-        .filter(ext => useTypeScript || !ext.includes("ts")),
+      extensions: paths.moduleFileExtensions.map(ext => `.${ext}`),
       alias: {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -619,35 +610,6 @@ module.exports = function(webpackEnv) {
             // public/ and not a SPA route
             new RegExp("/[^/]+\\.[^/]+$")
           ]
-        }),
-      // TypeScript type checking
-      useTypeScript &&
-        new ForkTsCheckerWebpackPlugin({
-          typescript: resolve.sync("typescript", {
-            basedir: paths.appNodeModules
-          }),
-          async: false,
-          checkSyntacticErrors: true,
-          tsconfig: paths.appTsConfig,
-          compilerOptions: {
-            module: "esnext",
-            moduleResolution: "node",
-            resolveJsonModule: true,
-            isolatedModules: true,
-            noEmit: true,
-            jsx: "preserve"
-          },
-          reportFiles: [
-            "**",
-            "!**/*.json",
-            "!**/__tests__/**",
-            "!**/?(*.)(spec|test).*",
-            "!**/src/setupProxy.*",
-            "!**/src/setupTests.*"
-          ],
-          watch: paths.appSrc,
-          silent: true,
-          formatter: typescriptFormatter
         })
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
