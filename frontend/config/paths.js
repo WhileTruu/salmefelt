@@ -41,8 +41,6 @@ const moduleFileExtensions = [
   "mjs",
   "web.js",
   "js",
-  "web.tsx",
-  "tsx",
   "json",
   "web.jsx",
   "jsx",
