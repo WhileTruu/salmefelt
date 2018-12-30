@@ -41,10 +41,7 @@ update msg model =
             ( { model | products = products }, Cmd.none )
 
         GetProducts (Err string) ->
-            let
-                _ =
-                    Debug.log "GetProducts error" string
-            in
+            -- TODO: Add real error handling
             ( model, Cmd.none )
 
         SelectProductImage index productImage ->
