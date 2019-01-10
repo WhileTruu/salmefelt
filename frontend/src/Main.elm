@@ -1,16 +1,19 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Navigation exposing (Location)
+import Browser
 import State
-import Types exposing (Flags, Model, Msg)
+import Types exposing (Flags, Model, Msg(..))
+import Url exposing (Url)
 import View
 
 
 main : Program Flags Model Msg
 main =
-    Navigation.programWithFlags Types.OnLocationChange
-        { view = View.view
-        , init = State.init
+    Browser.application
+        { init = State.init
+        , view = View.view
         , update = State.update
-        , subscriptions = always Sub.none
+        , subscriptions = \_ -> Sub.none
+        , onUrlRequest = ClickedLink
+        , onUrlChange = ChangedUrl
         }

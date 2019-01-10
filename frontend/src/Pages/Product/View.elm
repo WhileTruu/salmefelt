@@ -24,7 +24,7 @@ productImageButton index product image =
     Button.default
         (SelectProductImage index image)
         (image == ProductImages.selected product.images)
-        [ img [ src <| "/" ++ image.thumbnail, alt <| "button-image-" ++ toString image.id ] [] ]
+        [ img [ src <| "/" ++ image.thumbnail, alt <| "button-image-" ++ String.fromInt image.id ] [] ]
 
 
 imageView : Properties -> Html Msg
@@ -35,8 +35,8 @@ imageView { index, product } =
         ]
 
 
-description : { name : String, description : String } -> Html Msg
-description { name, description } =
+descriptionView : { name : String, description : String } -> Html Msg
+descriptionView { name, description } =
     div [ class "section" ] [ h2 [] [ text name ], text description ]
 
 
@@ -44,7 +44,7 @@ view : Properties -> List (Html Msg)
 view properties =
     [ Header.View.view properties.translations properties.language True
     , section [ class "container product-view" ]
-        [ imageView properties, description (getNameAndDescription properties) ]
+        [ imageView properties, descriptionView (getNameAndDescription properties) ]
     ]
 
 

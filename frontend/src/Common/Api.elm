@@ -1,4 +1,4 @@
-module Common.Api exposing (..)
+module Common.Api exposing (getProducts, getProductsWithGraphQl, graphQlJsonQuery)
 
 import Common.Types.Product as Product exposing (Product)
 import Dict exposing (Dict)
@@ -10,7 +10,11 @@ import Task exposing (Task)
 
 getProducts : Http.Request (Dict Int Product)
 getProducts =
-    Http.get "/api/v1/products/" (Json.Decode.list Product.decoder |> Json.Decode.andThen (\b -> Json.Decode.succeed (Dict.fromList (List.map (\a -> ( a.id, a )) b))))
+    Http.get "/api/v1/products/"
+        (Json.Decode.list Product.decoder
+            |> Json.Decode.andThen
+                (List.map (\a -> ( a.id, a )) >> Dict.fromList >> Json.Decode.succeed)
+        )
 
 
 getProductsWithGraphQl : Task Http.Error (Dict Int Product)
@@ -18,7 +22,10 @@ getProductsWithGraphQl =
     Http.post
         "/graphql"
         (Http.jsonBody graphQlJsonQuery)
-        (Json.Decode.list Product.decoder |> Json.Decode.andThen (\b -> Json.Decode.succeed (Dict.fromList (List.map (\a -> ( a.id, a )) b))))
+        (Json.Decode.list Product.decoder
+            |> Json.Decode.andThen
+                (List.map (\a -> ( a.id, a )) >> Dict.fromList >> Json.Decode.succeed)
+        )
         |> Http.toTask
 
 

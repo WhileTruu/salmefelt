@@ -1,4 +1,4 @@
-module Header.View exposing (..)
+module Header.View exposing (contactInformation, externalLinks, languageButton, languageButtons, logo, view)
 
 import Common.Button.View as Button
 import Common.Logo
@@ -12,8 +12,8 @@ import Types exposing (Msg(..), Route)
 
 logo : Bool -> Html Msg
 logo isCompact =
-    div
-        (ifThenElse isCompact [ onClickWithPreventDefault <| ChangeLocation "/" ] [])
+    a
+        (ifThenElse isCompact [ href <| "/" ] [])
         [ Common.Logo.image ]
 
 
@@ -21,7 +21,7 @@ languageButton : Language -> Language -> msg -> Html msg
 languageButton buttonLanguage selectedLanguage msg =
     let
         languageString =
-            buttonLanguage |> toString |> String.toLower
+            buttonLanguage |> Language.toString |> String.toLower
     in
     Button.small
         msg

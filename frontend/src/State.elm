@@ -1,26 +1,29 @@
 module State exposing (init, update)
 
+import Browser
+import Browser.Navigation as Nav
 import Common.Api as Api
-import Common.Types.Language as Language exposing (Language)
 import Common.Ports
+import Common.Types.Language as Language exposing (Language)
 import Common.Types.Product exposing (Product)
 import Common.Types.Product.Images as ProductImages exposing (ProductImage)
 import Dict exposing (Dict)
 import Http
 import Json.Decode
-import Navigation exposing (Location)
 import Routing
 import Types exposing (Flags, Model, Msg(..))
+import Url exposing (Url)
 
 
-init : Flags -> Location -> ( Model, Cmd Msg )
-init flags location =
-    ( { language =
-            flags.language
+init : Flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init flags url key =
+    ( { key = key
+      , route = Routing.parseUrl url
+      , language =
+            flags
                 |> Json.Decode.decodeValue Language.decode
                 |> Result.withDefault Language.EN
       , products = Dict.empty
-      , route = Routing.parseLocation location
       }
     , Http.send GetProducts Api.getProducts
     )
@@ -38,10 +41,7 @@ update msg model =
             ( { model | products = products }, Cmd.none )
 
         GetProducts (Err string) ->
-            let
-                _ =
-                    Debug.log "GetProducts error" string
-            in
+            -- TODO: Add real error handling
             ( model, Cmd.none )
 
         SelectProductImage index productImage ->
@@ -52,18 +52,23 @@ update msg model =
             , Cmd.none
             )
 
-        ChangeLocation path ->
-            ( model, Navigation.newUrl path )
-
         GoToProductPage path index productImage ->
             ( { model
                 | products = replaceActiveProductImageInProducts index productImage model.products
               }
-            , Navigation.newUrl path
+            , Nav.pushUrl model.key path
             )
 
-        OnLocationChange location ->
-            ( { model | route = Routing.parseLocation location }, Cmd.none )
+        ClickedLink urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl model.key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        ChangedUrl url ->
+            ( { model | route = Routing.parseUrl url }, Cmd.none )
 
 
 replaceActiveProductImageInProducts : Int -> ProductImage -> Dict Int Product -> Dict Int Product

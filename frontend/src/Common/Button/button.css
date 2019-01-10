@@ -63,7 +63,7 @@ a.button:active:not(.selected) {
 
 button.button::after,
 a.button::after {
-  content: '';
+  content: "";
   border-radius: var(--button-border-radius);
   position: absolute;
   top: 0;

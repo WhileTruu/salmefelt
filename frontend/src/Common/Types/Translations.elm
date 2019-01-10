@@ -3,7 +3,7 @@ module Common.Types.Translations exposing (Translations)
 
 type alias Translations =
     { header_slogan : String
-    , body_text : String
+    , body_text : List String
     , email : String
     , email_address : String
     , phone : String
@@ -11,7 +11,7 @@ type alias Translations =
     , contact : String
     , contact_name : String
     , address_translation : String
-    , address : String
+    , address : List String
     , company_name : String
     , links_facebook : String
     , links_etsy : String
