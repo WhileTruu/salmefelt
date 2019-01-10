@@ -130,7 +130,8 @@ module.exports = function(webpackEnv) {
       // require.resolve('webpack-dev-server/client') + '?/',
       // require.resolve('webpack/hot/dev-server'),
       isEnvDevelopment &&
-        require.resolve("react-dev-utils/webpackHotDevClient"),
+        // require.resolve("react-dev-utils/webpackHotDevClient"),
+        require.resolve("../scripts/webpackHotDevClient"),
       // Finally, this is your app's code:
       paths.appIndexJs
       // We include the app code last so that if there is a runtime error during
@@ -243,7 +244,22 @@ module.exports = function(webpackEnv) {
                 // directory for faster rebuilds.
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
-                compact: isEnvProduction
+                compact: isEnvProduction,
+                presets: [
+                  [
+                    require.resolve("@babel/preset-env"),
+                    {
+                      // `entry` transforms `@babel/polyfill` into individual requires for
+                      // the targeted browsers. This is safer than `usage` which performs
+                      // static code analysis to determine what's required.
+                      // This is probably a fine default to help trim down bundles when
+                      // end-users inevitably import '@babel/polyfill'.
+                      useBuiltIns: "entry",
+                      // Do not transform modules to CJS
+                      modules: false
+                    }
+                  ]
+                ]
               }
             },
             // Process any JS outside of the app with Babel.
@@ -256,6 +272,16 @@ module.exports = function(webpackEnv) {
                 babelrc: false,
                 configFile: false,
                 compact: false,
+                presets: [
+                  [
+                    // Latest stable ECMAScript features
+                    require("@babel/preset-env").default,
+                    {
+                      // Do not transform modules to CJS
+                      modules: false
+                    }
+                  ]
+                ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
 
@@ -293,7 +319,8 @@ module.exports = function(webpackEnv) {
                     debug: useDebugger && !isEnvProduction,
                     optimize: isEnvProduction,
                     pathToElm: paths.elm,
-                    forceWatch: !isEnvProduction
+                    forceWatch: !isEnvProduction,
+                    report: "json"
                   }
                 }
               ]

@@ -7,8 +7,8 @@ import Common.Types.Product.Images as ProductImages exposing (ProductImage)
 import Common.Types.Translations exposing (Translations)
 import Dict exposing (Dict)
 import Header.View
-import Html exposing (Html, div, h2, img, p, section, text)
-import Html.Attributes exposing (alt, class, property, src)
+import Html exposing (Html, a, div, h2, img, p, section, text)
+import Html.Attributes exposing (alt, class, href, property, src)
 import Json.Encode
 import Routing
 import Types exposing (Msg(..))
@@ -16,7 +16,7 @@ import Types exposing (Msg(..))
 
 intro : Translations -> Html Msg
 intro translations =
-    p [ class "intro", property "innerHTML" (Json.Encode.string <| translations.body_text) ] []
+    p [ class "intro" ] (translations.body_text |> List.map text |> List.intersperse (Html.br [] []))
 
 
 getName : Language -> Product -> String
@@ -32,7 +32,7 @@ getName language product =
 productButton : Int -> Product -> ProductImage -> Html Msg
 productButton index product productImage =
     Button.maxSize
-        ChangeUrl
+        (GoToProductPage (Routing.productPath product.id) index productImage)
         False
         [ div
             [ class "square-image-container" ]

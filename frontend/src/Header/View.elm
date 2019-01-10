@@ -12,8 +12,8 @@ import Types exposing (Msg(..), Route)
 
 logo : Bool -> Html Msg
 logo isCompact =
-    div
-        (ifThenElse isCompact [ onClickWithPreventDefault <| ChangeUrl ] [])
+    a
+        (ifThenElse isCompact [ href <| "/" ] [])
         [ Common.Logo.image ]
 
 

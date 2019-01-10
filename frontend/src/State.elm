@@ -1,7 +1,7 @@
-module State exposing (init, onUrlChange, onUrlRequest, update)
+module State exposing (init, update)
 
 import Browser
-import Browser.Navigation
+import Browser.Navigation as Nav
 import Common.Api as Api
 import Common.Ports
 import Common.Types.Language as Language exposing (Language)
@@ -15,7 +15,7 @@ import Types exposing (Flags, Model, Msg(..))
 import Url exposing (Url)
 
 
-init : Flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
+init : Flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
     ( { key = key
       , route = Routing.parseUrl url
@@ -56,14 +56,19 @@ update msg model =
             ( { model
                 | products = replaceActiveProductImageInProducts index productImage model.products
               }
-            , Cmd.none
+            , Nav.pushUrl model.key path
             )
 
-        RequestUrl ->
-            ( model, Cmd.none )
+        ClickedLink urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl model.key (Url.toString url) )
 
-        ChangeUrl ->
-            ( model, Cmd.none )
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        ChangedUrl url ->
+            ( { model | route = Routing.parseUrl url }, Cmd.none )
 
 
 replaceActiveProductImageInProducts : Int -> ProductImage -> Dict Int Product -> Dict Int Product
@@ -76,13 +81,3 @@ replaceActiveProductImageInProducts index productImage products =
                     { product | images = ProductImages.select productImage product.images }
                 )
             )
-
-
-onUrlRequest : Browser.UrlRequest -> Msg
-onUrlRequest request =
-    RequestUrl
-
-
-onUrlChange : Url -> Msg
-onUrlChange url =
-    ChangeUrl

@@ -2,7 +2,8 @@ module Main exposing (main)
 
 import Browser
 import State
-import Types exposing (Flags, Model, Msg)
+import Types exposing (Flags, Model, Msg(..))
+import Url exposing (Url)
 import View
 
 
@@ -13,6 +14,6 @@ main =
         , view = View.view
         , update = State.update
         , subscriptions = \_ -> Sub.none
-        , onUrlRequest = State.onUrlRequest
-        , onUrlChange = State.onUrlChange
+        , onUrlRequest = ClickedLink
+        , onUrlChange = ChangedUrl
         }
