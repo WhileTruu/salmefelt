@@ -8,7 +8,7 @@ translations =
     { header_slogan = "modern felt products inspired by Estonian history"
     , body_text =
         [ "Welcome to Salmefelt Ltd handicraft products page."
-        , "My creations come naturally from deep within my heart and carry my joy and feelings."
+        , "My creations come from deep within my heart and carry my joy and feelings."
         ]
     , email = "e-mail"
     , email_address = "salmefelt@gmail.com"

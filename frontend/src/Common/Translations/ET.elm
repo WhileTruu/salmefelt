@@ -8,7 +8,7 @@ translations =
     { header_slogan = "ajaloost inspireeritud modernsed viltesemed"
     , body_text =
         [ "Tere tulemast tutvuma Salmefelt OÜ käsitöötoodetega."
-        , " Minu looming tuleb ise loomulikul teel sügavalt südamest ja kannab edasi mu rõõme ja tundeid."
+        , "Minu looming tuleb sügavalt südamest ja kannab edasi mu rõõme ja tundeid."
         ]
     , email = "e-post"
     , email_address = "salmefelt@gmail.com"
