@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG'] == 'TRUE'
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['backend', 'localhost']
 APPEND_SLASH = True
 
 REST_FRAMEWORK = {
@@ -148,5 +148,5 @@ FILE_UPLOAD_PERMISSIONS  = 0o644
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/var/lib/backend/media'
 MEDIA_URL = '/media/'
