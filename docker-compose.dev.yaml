@@ -3,29 +3,23 @@ version: "3"
 services:
   db:
     image: postgres
-    expose:
+    ports:
       - 5432
     volumes:
       - data-volume:/var/lib/backend
   backend:
     environment:
-      - DEBUG=FALSE
+      - SECRET_KEY=NOT_VERY_SECRET
+      - DEBUG=TRUE
     build: ./backend
     # Wait for db server to be running and accepting connections on 5432
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python3 manage.py runserver 0.0.0.0:8000'
     volumes:
+      - ./backend:/app
       - data-volume:/var/lib/backend
-    expose:
-      - 8000
+    ports:
+      - "8000:8000"
     depends_on:
       - db
-  frontend:
-    build: ./frontend
-    ports:
-      - "80:1337"
-    volumes:
-      - data-volume:/var/lib/backend
-    depends_on:
-      - backend
 volumes:
   data-volume:
